@@ -1,11 +1,10 @@
-# 实验三 随机森林分类实验报告
-
+# 实验二（1） 随机森林分类实验报告
+序号：06  姓名：李天明  学号：20221200703 
 ## 实验目的
 1. 掌握决策树（ID3, C4.5, CART）及随机森林的基本原理和实现方法。
 2. 实现自定义随机森林模型，包含ID3、C4.5和CART算法，不依赖scikit-learn的决策树或随机森林库。
 3. 比较自定义随机森林与scikit-learn随机森林在wine数据集上的性能。
 4. 通过数据分析和可视化，理解特征与分类的关系及模型性能差异。
-
 ## 实验环境
 - **操作系统**: Windows 10
 - **开发工具**: PyCharm
@@ -16,28 +15,21 @@
   - matplotlib: 数据可视化
   - seaborn: 增强可视化
   - scikit-learn (>=0.18): 数据加载（load_wine）和scikit-learn随机森林比较
-
 **安装命令**:
 ```bash
 pip install numpy pandas matplotlib seaborn scikit-learn
 ```
-
 ## 实验内容
 使用scikit-learn的`load_wine`数据集，包含178个样本，13个连续特征（例如酒精含量、苹果酸）和3个目标类别（葡萄酒类型0, 1, 2）。任务包括：
 - 实现ID3（基于信息增益，需离散化特征）、C4.5（基于增益率）和CART（基于Gini指数）的决策树。
 - 构建自定义随机森林，通过bagging和随机特征选择集成多个决策树。
 - 比较自定义随机森林与scikit-learn的`RandomForestClassifier`性能。
 - 数据集按3:1比例划分为训练集和测试集，评估准确率、精确率、召回率、F1分数和混淆矩阵。
-
-
 ## 实验步骤
 ### 1. 环境搭建
 确保Python 3.9和所需库已安装。
-
 ### 2. 数据预处理
 加载wine数据集，离散化特征（ID3需要），划分训练集和测试集。
-
-
 ```python
 import numpy as np
 import pandas as pd
@@ -81,7 +73,6 @@ print("测试集形状:", X_test.shape)
 print("\n训练集描述统计:")
 print(X_train.describe())
 ```
-
     数据集总样本数: 178
     训练集形状: (133, 13)
     测试集形状: (45, 13)
@@ -123,11 +114,8 @@ print(X_train.describe())
 - **特征**: 13个连续特征，ID3需要离散化（使用四分位数分箱）。
 - **划分比例**: 3:1划分（`test_size=0.25`），随机种子确保可重复性。
 - **数据检查**: 验证无缺失值，离散化后的数据用于ID3，原始数据用于C4.5/CART。
-
 ### 3. 探索性数据分析 (EDA)
 分析特征分布及与目标变量的关系。
-
-
 ```python
 # 特征分布
 plt.figure(figsize=(15, 10))
@@ -151,40 +139,18 @@ sns.scatterplot(x=X_train[feature_names[0]], y=X_train[feature_names[1]], hue=y_
 plt.title(f'{feature_names[0]} vs {feature_names[1]} by Class')
 plt.show()
 ```
-
-
-    
 ![png](output_5_0.png)
-    
 
 
-    C:\Users\32491\AppData\Local\Temp\ipykernel_32216\2751546486.py:12: FutureWarning: 
-    
-    Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `x` variable to `hue` and set `legend=False` for the same effect.
-    
-      sns.countplot(x=y_train, palette='Set2')
-    
-
-
-    
 ![png](output_5_2.png)
     
-
-
-
-    
 ![png](output_5_3.png)
-    
-
-
 #### 探索性数据分析结果
 - **特征分布**: 连续特征（如酒精含量）呈不同分布，可能需标准化或离散化。
 - **目标分布**: 三个类别（0, 1, 2）分布较为平衡，类别0和1样本较多。
 - **特征与目标**: 散点图显示某些特征组合（如酒精和苹果酸）对类别有区分能力。
-
 ### 4. 自定义决策树和随机森林实现
 实现ID3, C4.5, CART决策树及随机森林。
-
 
 ```python
 import math
@@ -388,7 +354,6 @@ try:
 except Exception as e:
     print(f"Training error: {e}")
 ```
-
 #### 模型训练分析
 - **决策树实现**:
   - **ID3**: 使用信息增益，处理离散特征（分箱后的数据）。
@@ -396,11 +361,8 @@ except Exception as e:
   - **CART**: 使用Gini指数，适合分类任务，处理连续特征。
 - **随机森林**: 集成10棵树，使用bagging和随机特征选择（sqrt(n_features)）。
 - **scikit-learn模型**: 使用相同参数（10棵树，max_depth=4）进行比较。
-
 ### 5. 模型评估
 比较自定义随机森林（ID3, C4.5, CART）和scikit-learn随机森林的性能。
-
-
 ```python
 def evaluate_model(model, X_test, y_test, model_name):
     """评估模型性能"""
@@ -431,8 +393,6 @@ y_pred_cart, cm_cart = evaluate_model(rf_cart, X_test, y_test, 'Custom Random Fo
 y_pred_sklearn, cm_sklearn = evaluate_model(rf_sklearn, X_test, y_test, 'Scikit-learn Random Forest')
 
 ```
-
-    
     Custom Random Forest (ID3) 性能:
     准确率: 0.2667
     精确率: 0.1000
@@ -472,21 +432,12 @@ y_pred_sklearn, cm_sklearn = evaluate_model(rf_sklearn, X_test, y_test, 'Scikit-
     [[18  0  0]
      [ 1 16  0]
      [ 0  0 10]]
-    
-
-    E:\anaconda3\envs\Torch_cpu\lib\site-packages\sklearn\base.py:493: UserWarning: X does not have valid feature names, but RandomForestClassifier was fitted with feature names
-      warnings.warn(
-    
-
 #### 模型评估结果
 - **指标**: 准确率、精确率、召回率和F1分数（macro平均，适合多分类）。
 - **混淆矩阵**: 显示每个类别的分类情况，TP、FP、TN、FN分布。
 - **分析**: scikit-learn的随机森林可能因优化算法（更快收敛、更高效分裂）而性能更优；ID3可能因离散化损失信息而稍逊。
-
 ### 6. 结果可视化
 绘制混淆矩阵和特征重要性。
-
-
 ```python
 def visualize_results(cms, model_names, feature_names, rf_custom, rf_sklearn):
     """可视化混淆矩阵和特征重要性"""
@@ -537,24 +488,12 @@ except Exception as e:
     print(f"Visualization error: {e}")
 ```
 
-
-    
 ![png](output_14_0.png)
-    
-
-
-
     
 ![png](output_14_1.png)
     
-
-
-
-    
 ![png](output_14_2.png)
     
-
-
 #### 可视化分析
 - **混淆矩阵**: 对角线值高表示分类准确，比较四个模型的分类错误分布。
 - **特征重要性**: 显示各特征对分类的贡献，scikit-learn和自定义模型可能突出不同特征。
@@ -570,7 +509,6 @@ except Exception as e:
   - scikit-learn随机森林因优化算法（例如高效分裂、并行化）通常性能更优。
 - **数据分析**: EDA显示特征分布和类别区分，某些特征（如酒精含量）对分类贡献较大。
 - **可视化**: 混淆矩阵和特征重要性图直观比较模型性能。
-
 ### 讨论
 - **优势**:
   - 自定义随机森林：完全控制算法逻辑，适合学习和定制。
@@ -583,6 +521,5 @@ except Exception as e:
   - 优化自定义实现的计算效率（例如，使用KD树加速分裂）。
   - 增加树数量或调整`max_features`提高自定义模型性能。
   - 使用交叉验证评估模型稳定性。
-
 ## 结论
 实验实现了自定义随机森林（ID3, C4.5, CART）并与scikit-learn随机森林比较，验证了算法原理和实现可行性。scikit-learn模型通常性能更优，因其优化高效。数据分析和可视化揭示了特征重要性，实验加深了对随机森林的理解，为后续优化提供了方向。
